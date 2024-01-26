@@ -17,6 +17,7 @@ export class GildedRose {
         this.items = items;
     }
 
+
     updateQuality(){
         for (let i = 0; i< this.items.length; i++){
 
@@ -25,10 +26,8 @@ export class GildedRose {
             let sellIn = this.items[i].sellIn;
 
             if (name !== 'Sulfuras, Hand of Ragnaros'){
-
-                sellIn -= 1;
-                
                 if(name == 'Aged Brie'){
+                    sellIn -= 1;
                     if(quality < 50) {
                         if(sellIn > 0 || sellIn <= 0 && quality === 49 ) {
                             quality += 1;
@@ -41,14 +40,25 @@ export class GildedRose {
                         quality = 0;
                     } else if(sellIn > 0 && quality < 50){
                         quality +=1;
-                        if ( sellIn < 11 && quality <= 49) {
+                        if (sellIn < 11 && quality < 50) {
                             quality += 1;
                         } 
-                        if (sellIn < 6 && quality <= 49){
+                        if (sellIn <= 6 && quality < 50){
                             quality += 1;  
                         }
                     }
-                }else {
+                sellIn -= 1;
+            }else if(name === 'Conjured Mana Cake'){
+                sellIn -=1;
+                if(sellIn > 0){
+                    quality = quality > 1 ? quality -2 : 0;
+                }  
+                if (sellIn <= 0){
+                    quality = quality > 3 ? quality -4 : 0;
+                }
+
+            }else {
+                    sellIn -= 1;
                     if (sellIn > 0 && quality > 0){
                         quality -= 1;
                     }
