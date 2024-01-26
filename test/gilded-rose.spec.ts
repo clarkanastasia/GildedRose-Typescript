@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import { Item, GildedRose } from '../app/gilded-rose';
 
 
-describe('Gilded Rose', () => {
+describe('Sulfuras test', () => {
 
-    it('check sulfuras unchanged', function() {
+    it('does not change', function() {
         const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 6, 80)]);
 
         const items = gildedRose.updateQuality();
@@ -14,22 +14,20 @@ describe('Gilded Rose', () => {
     });
 });
 
-describe('Gilded Rose', () => {
+describe('Tests for other items', () => {
 
-    it('other item past sellin', function() {
-        const gildedRose = new GildedRose([ new Item('Bread', 0, 2)]);
+    it('sellIn is less or equal to 0', function() {
+        const gildedRose = new GildedRose([ new Item('Bread', 0, 2),  new Item('Bread', -1, 2)]);
 
         const items = gildedRose.updateQuality();
 
         expect(items[0].sellIn).to.equal(-1);
         expect(items[0].quality).to.equal(0);
+        expect(items[1].sellIn).to.equal(-2);
+        expect(items[1].quality).to.equal(0);
     });
-});
 
-
-describe('Gilded Rose', () => {
-
-    it('other item before sellin', function() {
+    it('sellIn is more than 0', function() {
         const gildedRose = new GildedRose([ new Item('Bread', 4, 10)]);
 
         const items = gildedRose.updateQuality();
@@ -39,7 +37,8 @@ describe('Gilded Rose', () => {
     });
 });
 
-describe('Gilded Rose', () => {
+
+describe('Aged Brie tests', () => {
 
     it('brie sellin date', function() {
         const gildedRose = new GildedRose([ 
@@ -54,9 +53,6 @@ describe('Gilded Rose', () => {
         expect(items[1].sellIn).to.equal(0);
         expect(items[2].sellIn).to.equal(-1);
     });
-});
-
-describe('Gilded Rose', () => {
 
     it('brie quality', function() {
         const gildedRose = new GildedRose([ 
@@ -78,7 +74,7 @@ describe('Gilded Rose', () => {
     });
 });
 
-describe('Gilded Rose', () => {
+describe('Backstages passes', () => {
 
     it('backstage passes quality', function() {
         const gildedRose = new GildedRose([ 
@@ -104,3 +100,28 @@ describe('Gilded Rose', () => {
     });
 });
 
+describe('Conjured Mana Cake', () => {
+
+    it('sellIn <= 0', function() {
+        const gildedRose = new GildedRose([ new Item('Conjured Mana Cake', 0, 4), 
+                                            new Item('Conjured Mana Cake', 0, 3)]);
+        const items = gildedRose.updateQuality();
+
+        expect(items[0].sellIn).to.equal(-1);
+        expect(items[0].quality).to.equal(0);
+        expect(items[1].sellIn).to.equal(-1);
+        expect(items[1].quality).to.equal(0);
+    });
+
+    it('sellIn > 0', function() {
+        const gildedRose = new GildedRose([ new Item('Conjured Mana Cake', 10, 10),
+                                            new Item('Conjured Mana Cake', 4, 1)]);
+
+        const items = gildedRose.updateQuality();
+
+        expect(items[0].sellIn).to.equal(9);
+        expect(items[0].quality).to.equal(8);
+        expect(items[1].sellIn).to.equal(3);
+        expect(items[1].quality).to.equal(0);
+    });
+});
